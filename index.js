@@ -14,17 +14,20 @@ app.use(
     },
     // 修改响应头信息，实现跨域并允许带cookie
     onProxyRes: function(proxyRes, req, res) {
-      res.header(
-        'Access-Control-Allow-Origin',
-        'http://localhost:8080,http://localhost:8080/#/'
-      )
-      res.header('Access-Control-Allow-Credentials', 'true')
+      let origin = req.headers.origin
+      // 设置哪个源可以访问我
+      res.header('Access-Control-Allow-Origin', origin)
+      // 允许携带哪个头访问我
       res.header(
         'Access-Control-Allow-Headers',
         'Content-Type,Content-Length, Authorization,authorization, Accept,X-Requested-With'
       )
+      // 允许哪个方法访问我 可以设置*
       res.header('Access-Control-Allow-Methods', 'PUT,POST,GET,DELETE,OPTIONS')
-      res.header('Access-Control-Expose-Headers:*')
+      // 允许携带cookie
+      res.header('Access-Control-Allow-Credentials', 'true')
+      // 预检的存活时间
+      res.header('Access-Control-Max-Age', 6)
     }
     /*  router: {
       // 如果请求主机 == 'dev.localhost:3000',
